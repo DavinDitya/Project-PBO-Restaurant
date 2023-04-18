@@ -1,25 +1,13 @@
 package Project;
 
-import java.util.ArrayList;
-import java.util.Scanner;
 
 public class Menu {
     String name;
     double price;
-    int id;
-    public Menu (int id, String name, double price) {
-        this.name = name;
-        this.id = id;
-        this.price = price;
-    }
 
-    public void Makanan(String name, double price){
-        this.price = price;
+    public Menu (String name, double price) {
         this.name = name;
-    }
-    public void Minuman(String name, double price){
-       this.price = price;
-       this.name = name;
+        this.price = price;
     }
 
     public String getName() {
@@ -38,13 +26,6 @@ public class Menu {
         this.price = price;
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
     public String toString() {
         return "Menu : " +
                 name + " || Rp." + price;

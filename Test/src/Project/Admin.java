@@ -2,13 +2,16 @@ package Project;
 
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.HashMap;
 
 public class Admin {
-    private static ArrayList<Restoran> restorans = new ArrayList<>();
-    public static ArrayList<Menu> nmenu = new ArrayList<>();
+
+    static HashMap<String, Restoran> restorans = new HashMap<>();
+    public static ArrayList<Order> orders = new ArrayList<>();
 
     private static Scanner scanner = new Scanner(System.in);
-    static void MenuAdmin(){
+
+    static void MenuAdmin() {
         System.out.println("------- ADMIN'S MENU -------");
         System.out.println("1. Lihat Restoran           ");
         System.out.println("2. Menambah Restoran        ");
@@ -28,83 +31,101 @@ public class Admin {
         System.out.print("Masukkan Alamat Restoran : ");
         String address = scanner.next();
         Restoran restoran = new Restoran(id, name, address);
-        restorans.add(restoran);
 
-        int ulang;
-        do {
-            System.out.println("------------------------------");
-            System.out.println("Restoran ");
-            System.out.println(restoran.getName());
-
-            System.out.println("Tambahkan opsi");
-            System.out.println("Tambahkan Menu ");
-            System.out.println("1. Makanan");
-            System.out.println("2. Minuman");
-            int input = scanner.nextInt();
-            System.out.print("Masukkan Nama Menu : ");
-            String name_menu = scanner.next();
-            System.out.print("Masukkan Harga Menu : ");
-            double price_menu = scanner.nextDouble();
-
-            Menu menu = new Menu(id,name_menu,price_menu);
-            switch (input) {
-                case 1:
-                    nmenu.add(menu);
-                    break;
-                case 2:
-                    nmenu.add(menu);
-                    break;
+        String inputMenu = "";
+        while (!inputMenu.equals("Selesai")) {
+            System.out.print("Masukkan Menu (format: NAMA MENU|HARGA MENU) enter, lalu ketik Selesai : ");
+            inputMenu = scanner.next();
+            if (!inputMenu.equals("Selesai")) {
+                String[] menuData = inputMenu.split("\\|");
+                restoran.setNmenu(new Menu(menuData[0], Integer.parseInt(menuData[1])));
             }
-            System.out.print("Apakah Ingin Menambah Menu? (1 = Iya / 2 = Tidak) : ");
-            ulang = scanner.nextInt();
-        } while (ulang == 1);
-
-
+        }
+        restorans.put(name, restoran);
+        System.out.println("Menambah Restoran BERHASIL!!!");
     }
+
     public static void viewRestoran(){
-        if(restorans.size() > 0){
-            for(int a = 0; a < restorans.size(); a++){
-                System.out.println(a+1 +". "+ restorans.get(a).toString());
+        System.out.println("============= RESTORAN =============");
+        for(String namaRestoran : restorans.keySet()){
+            System.out.println("ID Restoran : " + restorans.get(namaRestoran).getId()
+                    + " || Nama : " + namaRestoran + " || Alamat : " +restorans.get(namaRestoran).getAddress());
+            System.out.println("Menu : ");
+            for (Menu menu : restorans.get(namaRestoran).getNmenu()){
+                System.out.println(menu.getName() + " || " +menu.getPrice());
             }
-        }else {
-            System.out.println("Data Restoran Belum Ada!!!");
         }
     }
 
     public static void viewMenu(){
-        viewRestoran();
-        System.out.print("Masukkan Restoran Yang Diinginkan : ");int pilih = scanner.nextInt();
-        if(restorans.size() > 0) {
-            for (int b = 0; b < restorans.size(); b++) {
-                int res=restorans.get(b).getId();
-                if (nmenu.size() > 0) {
-                    for (int i = 0; i < nmenu.size(); i++) {
-                        int men = nmenu.get(i).getId();
-                        if (pilih == res && res == men){
-                            System.out.println(i + 1 + ". " + nmenu.get(i).toString());
-                        }
-                    }
-                } else {
-                    System.out.println("Menu Restoran Belum Ada!!!");
-                }
+        System.out.println("==== RESTORAN ====");
+        for(String namarestoran : restorans.keySet()) {
+            System.out.println(namarestoran + " || " + restorans.get(namarestoran).getAddress());
+        }
+        System.out.print("Masukkan Nama Restoran : ");
+        String pilih_restoran = scanner.next();
+        if(!restorans.containsKey(pilih_restoran)){
+            System.out.println("Menu Tidak Ada!!!");
+        }
+        Restoran res = restorans.get(pilih_restoran);
+        Order newOrder = new Order(res);
+        String menu = "";
+        while(!menu.equals("2")){
+            System.out.println("==== "+ res.getName() + " ====");
+            System.out.println("Menu : ");
+            int nomorMenu = 1;
+            for (Menu menu1 : res.getNmenu()){
+                System.out.println(nomorMenu + ". " + menu1.getName() + " - " + menu1.getPrice());
+                nomorMenu++;
             }
-        }else {
-            System.out.println("Data Restoran Belum Ada!!!");
+            System.out.print("Masukkan Nomor Menu : ");
+            int indexMenu = scanner.nextInt();
+            System.out.print("Jumlah yang Ingin Dibeli : ");
+            int jumlah_beli = scanner.nextInt();
+            scanner.nextLine();
+
+            newOrder.addMenu(res.getNmenu().get(indexMenu - 1), jumlah_beli);
+
+            System.out.print("Apakah Ingin Menambah Menu Lagi?  (1 = Iya / 2 = Tidak) : ");
+            menu = scanner.next();
+        }
+        System.out.print("Masukkan Jarak Pengantaran Makanan (dalam KM) : ");
+        int jarak = scanner.nextInt();
+
+        newOrder.setDistance(jarak);
+        orders.add(newOrder);
+        System.out.println("BERHASIL MEMESAN MENU!!!");
+    }
+
+    public static void viewOrder(){
+        System.out.println("===== ORDERS =====");
+        for(int i = 0; i<orders.size(); i++){
+            Order order = orders.get(i);
+            System.out.println((i+1) + ". " +order.getRestoran().getName());
+            System.out.println("Menu : ");
+            for(Menu menu : order.getNmenu().keySet()){
+                System.out.println(menu.getName() + " X " + order.getNmenu().get(menu));
+            }
+            System.out.println("Ongkir 1.000.km || Jarak : "+order.getDistance()+" km");
+            System.out.println("Total Bayar : "+order.getTotalPrice());
         }
     }
 
     public static void removeRestoran(){
-        System.out.print("Masukkan Nomor ID Restoran : ");
-        int idRestoran = scanner.nextInt();
-
-        if (idRestoran > 0 && idRestoran <= restorans.size()) {
-            restorans.remove( idRestoran-1);
-            System.out.println("Restoran TERHAPUS!!!");
+        for(String namaRestaurant : restorans.keySet()){
+            System.out.println("ID Restoran : " + restorans.get(namaRestaurant).getId()
+                    + " || Nama : " + namaRestaurant + " || Alamat : " +restorans.get(namaRestaurant).getAddress());
+        }
+        System.out.println("==============================");
+        System.out.println("Masukkan Nama Restoran : ");
+        String namaRestaurant = scanner.next();
+        if(restorans.containsKey(namaRestaurant)){
+            restorans.remove(namaRestaurant);
+            System.out.println("Restoran Berhasil Di HAPUS!!!");
         }else{
-            System.out.println("ID Restoran Tidak Ditemukan!!!");
+            System.out.println("RESTORAN NOT FOUNDING!!!");
         }
     }
-
-
-
 }
+
+

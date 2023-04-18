@@ -7,14 +7,17 @@ public class Restoran {
     private int id;
     private String name;
     private String address;
+    private ArrayList<Menu> nmenu;
 
     public Restoran(int id, String name, String address) {
         this.id = id;
         this.name = name;
         this.address = address;
+        this.nmenu = new ArrayList<>();
     }
 
     public int getId() {
+        setId(id);
         return id;
     }
 
@@ -23,6 +26,7 @@ public class Restoran {
     }
 
     public String getName() {
+        setName(name);
         return name;
     }
 
@@ -31,6 +35,7 @@ public class Restoran {
     }
 
     public String getAddress() {
+        setAddress(address);
         return address;
     }
 
@@ -38,9 +43,17 @@ public class Restoran {
         this.address = address;
     }
 
+    public ArrayList<Menu> getNmenu() {
+        return nmenu;
+    }
+
+    public void setNmenu(Menu nmenu) {
+        this.nmenu.add(nmenu);
+    }
+
     @Override
     public String toString() {
-        return "Restoran || " +
+        return "ID Restoran : " + id +
                 ", Name=" + name + ' ' +
                 ", Address=" + address + ' ';
     }
