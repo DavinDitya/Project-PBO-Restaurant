@@ -42,6 +42,6 @@ public class Restoran {
     public String toString() {
         return "Restoran || " +
                 ", Name=" + name + ' ' +
-                ", Addres=" + address + ' ';
+                ", Address=" + address + ' ';
     }
 }
