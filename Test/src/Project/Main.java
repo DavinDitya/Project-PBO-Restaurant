@@ -14,12 +14,13 @@ public class Main {
 
 
         while(!isLoggedIn) {
-            System.out.println("=========== Login ==========");
+            System.out.println("SELAMAT DATANG, SILAHKAN LOGIN");
+            System.out.println("========== LOGIN ==========");
             System.out.print("| Masukkan username: ");
             user = scanner.next();
             System.out.print("| Masukkan password: ");
             password = scanner.next();
-            System.out.println("============================");
+            System.out.println("===========================");
 
             if (user.equals(user2.getUsername_user()) && password.equals(user2.getPassword_user()) || user.equals(user2.getUsername_admin()) && password.equals(user2.getPassword_admin())) {
                 int ulang;
