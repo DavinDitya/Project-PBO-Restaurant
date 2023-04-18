@@ -8,6 +8,11 @@ PBO (D)
 ## TENTANG
 Project ini merupakan project Matakuliah Pemrograman Berorientasi Objek yang dimana project ini adalah program Restoran Online dibuat dalam bahasa Java.
 
+## UML
+Diagram kelas UML (Unified Modeling Language) adalah gambaran model struktur suatu sistem berbasis objek. Diagram ini menunjukkan kelas-kelas yang ada dalam sistem, atribut-atribut yang dimiliki oleh kelas-kelas tersebut, serta hubungan antara kelas-kelas tersebut.
+
+![UML](/image/UML.png "UML")
+
 ## ALUR PROGRAM
 Berikut ini adalah alur dari program Restoran Online
 
